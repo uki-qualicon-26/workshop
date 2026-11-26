@@ -444,18 +444,32 @@
     closeBtn.focus();
   }
 
+  // Clears the saved session, then tries to close the tab. Browsers only allow that for tabs a script opened,
+  // so the goodbye screen stays up as the fallback.
+  function logout() {
+    api.session.clear();
+    sess = null;
+    $('topbar').classList.add('hidden');
+    $('app').replaceChildren(h('section', { class: 'card finish' },
+      h('div', { class: 'big-emoji', text: '👋' }),
+      h('h2', { text: 'You are logged out' }),
+      h('p', { class: 'muted', text: 'Thanks for joining the workshop. You can now close this browser tab.' }),
+      h('div', { class: 'row center' }, h('a', { class: 'btn secondary', href: '../', text: 'Back to home' }))));
+    window.close();
+  }
+
   function renderFinish(app) {
     const mins = state.startedAt && state.finishedAt ? Math.max(1, Math.round((state.finishedAt - state.startedAt) / 60000)) : null;
     const cert = h('button', { class: 'btn big', type: 'button', text: '🏆 View your certificate' });
     cert.addEventListener('click', showCertificate);
-    const again = h('button', { class: 'btn secondary', type: 'button', text: 'Review the steps' });
-    again.addEventListener('click', () => view(list()[0].id));
+    const out = h('button', { class: 'btn secondary', type: 'button', text: 'Log out' });
+    out.addEventListener('click', logout);
     app.append(h('section', { class: 'card finish' },
       h('div', { class: 'big-emoji', text: '🏁' }),
       h('h2', { text: 'Workshop complete' }),
       h('p', { text: 'You used Bob to read requirements, run tests and add a new test.' + (mins ? ' Time on this guide: about ' + mins + ' minute' + (mins === 1 ? '' : 's') + '.' : '') }),
       h('div', { class: 'row center' }, cert),
-      h('div', { class: 'row center' }, again, h('a', { class: 'btn secondary', href: '../', text: 'Back to home' }))));
+      h('div', { class: 'row center' }, out, h('a', { class: 'btn secondary', href: '../', text: 'Back to home' }))));
   }
 
   function renderStep(app, steps, idx, current) {
