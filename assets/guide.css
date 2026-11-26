@@ -7,7 +7,7 @@
   border: 1.5px solid var(--neon-pink); color: #fff; background: rgba(224, 64, 251, .15); }
 .pathpill.b { border-color: var(--neon-cyan); background: rgba(61, 230, 255, .12); }
 
-.stepper { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.stepper { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 10px; }
 .pip { width: 34px; height: 34px; padding: 0; border-radius: 50%; border: 1.5px solid var(--border);
   background: rgba(14, 14, 66, .8); color: var(--muted); font-weight: 700; font-size: .85rem; cursor: pointer; }
 .pip.done { border-color: var(--ok); color: #6fdc8c; }
