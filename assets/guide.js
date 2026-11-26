@@ -22,7 +22,7 @@
         cmd('mkdir -p ~/Documents/workshop', 'macOS or Linux terminal'),
         cmd('New-Item -ItemType Directory -Force -Path "$HOME\\Documents\\workshop"', 'Windows PowerShell'),
         ol(['In IBM Bob, choose **File > Open Folder...**, select the new `workshop` folder (`Documents/workshop`), then confirm to open it as your workspace.',
-            'A new folder opens in **Restricted Mode**, and the Bob chat panel is not shown on the right. Click **Manage** at the end of the Restricted Mode banner at the top, then click **Trust** on the Workspace Trust page. The Bob chat panel then appears on the right-hand side.'], 2),
+            'The folder opens in **Restricted Mode** with no Bob chat panel. Click **Manage** in the banner at the top, then **Trust** on the Workspace Trust page. The chat panel then appears on the right.'], 2),
       ],
     },
     {
