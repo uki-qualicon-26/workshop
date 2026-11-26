@@ -82,7 +82,7 @@
         ol(['In Bob, click the **Settings** icon in the Bob panel and open the **MCP** tab.',
             'Click the **+** (Add MCP Server) button above the server list. In the **Configuration Scope** box choose **Global (All Workspaces)**, not the `UKI-QUALI-CON` workspace option.',
             'Click **Open Configuration File**. This opens `~/.bob/settings/mcp.json`.',
-            'Paste the `atlassian-jira` entry from Step 6 into this file. If the file is empty, the whole file is the `{ "mcpServers": { ... } }` block. If it already lists other servers, add only the `"atlassian-jira": { ... }` part inside the existing `mcpServers` and keep a comma between entries. Do not replace the other servers.',
+            'Paste the `atlassian-jira` entry from Step 6 into this file.',
             'Replace `YOUR_EMAIL_HERE` and `YOUR_TOKEN_HERE` with your real email and token, then save the file.',
             'Reload the MCP servers: click the **refresh** icon next to **+** in the MCP tab. The first start downloads the server, so allow a minute.',
             'Check the connection: `atlassian-jira` should appear in the server list with a green dot, status **Connected** and scope **Global**.']),
