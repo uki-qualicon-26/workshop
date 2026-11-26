@@ -5,7 +5,7 @@
 
   // ---------- tiny content helpers ----------
   const p = (text) => ({ t: 'p', text });
-  const ol = (items) => ({ t: 'ol', items });
+  const ol = (items, start) => ({ t: 'ol', items, start });
   const prompt = (text, label, extra) => Object.assign({ t: 'prompt', text, label: label || 'Paste into Bob' }, extra);
   const cmd = (text, label) => ({ t: 'cmd', text, label: label || 'Command (if you prefer a terminal)' });
   const callout = (kind, title, text) => ({ t: 'callout', kind, title, text });
@@ -18,10 +18,10 @@
       id: 's1', num: 1, who: 'you', title: 'Create an empty folder and open it in Bob',
       confirm: 'Bob is open on my new empty folder.',
       blocks: [
-        ol(['Create an empty `workshop` folder in your Documents folder. Run the command below in a terminal, or create it manually.',
-            'In IBM Bob, choose **File > Open Folder...**, select the new `workshop` folder (`Documents/workshop`), then confirm to open it as your workspace.']),
+        ol(['Create an empty `workshop` folder in your Documents folder. Run the command below in a terminal, or create it manually.']),
         cmd('mkdir -p ~/Documents/workshop', 'macOS or Linux terminal'),
         cmd('New-Item -ItemType Directory -Force -Path "$HOME\\Documents\\workshop"', 'Windows PowerShell'),
+        ol(['In IBM Bob, choose **File > Open Folder...**, select the new `workshop` folder (`Documents/workshop`), then confirm to open it as your workspace.'], 2),
       ],
     },
     {
@@ -253,7 +253,7 @@
     if (b.only && b.only !== state.path) return null;
     switch (b.t) {
       case 'p': return inline(h('p'), b.text);
-      case 'ol': return h('ol', null, b.items.map((i) => inline(h('li'), i)));
+      case 'ol': return h('ol', b.start ? { start: String(b.start) } : null, b.items.map((i) => inline(h('li'), i)));
       case 'prompt':
       case 'cmd': {
         const btn = h('button', { class: 'btn secondary copy', type: 'button', text: 'Copy' });
