@@ -32,7 +32,7 @@
         prompt('Check that Node.js 20 or later and Git are installed and tell me the versions. Then clone https://github.com/satishkumar-sarathi-pillai/UKI-QUALI-CON.git into this workspace. Tell me the result of each command and stop if any step fails. Do not change any files.'),
         callout('expect', 'You should see', 'Node 20+ and a Git version, then a new `UKI-QUALI-CON` folder.'),
         callout('warn', 'If Node or Git is missing', 'Install them yourself (this usually needs admin rights), then paste the prompt again.'),
-        p('Then **open the cloned `UKI-QUALI-CON` folder as your Bob workspace**, so the next prompts can see the tests. In IBM Bob, choose **File > Open Folder...**, select the `UKI-QUALI-CON` folder inside `Documents/workshop`, then confirm.'),
+        p("Then **open the cloned 'UKI-QUALI-CON' folder as your Bob workspace** so the next prompts can see the tests: **File > Open Folder...**, select 'UKI-QUALI-CON' inside 'Documents/workshop', then confirm."),
       ],
     },
     {
