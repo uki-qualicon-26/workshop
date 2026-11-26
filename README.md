@@ -7,7 +7,7 @@ Live at **https://uki-qualicon-26.github.io/workshop/** (people arrive from the 
 ## How it works
 
 - One step is shown at a time. The next step unlocks only when the participant ticks the confirmation box and continues.
-- **Path A** uses the Jira MCP server (Steps 1 to 8, then 9 to 15).
+- **Path A** uses the Jira MCP server (Steps 1 to 8, then 9 to 14).
 - **Path B** needs no MCP. Bob reads the same tickets from the `requirements/` folder of the workshop repo (Steps 1 to 4, then 9 to 14).
 - Participants can switch path at any time. Completed shared steps stay done.
 - Every Bob prompt has a Copy button.

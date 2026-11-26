@@ -167,14 +167,6 @@
         p('Write down the Bobcoins used. It is a good number to quote when you tell stakeholders what the workshop cost.'),
       ],
     },
-    {
-      id: 's15', num: 15, who: 'bob', only: 'A', optional: true, title: 'Draft a Jira bug',
-      confirm: 'Bob drafted a bug and I did not let it create anything in Jira.',
-      blocks: [
-        prompt('Draft a Jira bug for the last failing test in project UKIQC, with steps, expected result and actual result. Show me the draft and do not create anything in Jira until I say so.'),
-        p('This is only useful if something failed. Bob must not create issues unless you explicitly tell it to.'),
-      ],
-    },
   ];
 
   // ---------- state ----------
