@@ -66,3 +66,5 @@ a { color: var(--neon-cyan); }
 .finish { text-align: center; }
 .finish .big-emoji { font-size: 3rem; }
 .foot { margin-top: 36px; text-align: center; font-size: .8rem; color: var(--muted); }
+
+a.btn { display: inline-block; text-decoration: none; text-align: center; }

@@ -1,10 +1,7 @@
 /* Qualicon 2026 workshop guide: one step at a time, gated, with Path A (Jira MCP) and Path B (repo fallback).
-   No network calls, no secrets. Progress is kept in this browser's localStorage only. */
+   Needs a registration and a submitted quiz. Only step progress is saved, through the workshop_* RPCs. No secrets. */
 (() => {
   'use strict';
-
-  const KEY = 'qualicon-workshop-guide-v1';
-  const QUIZ_URL = 'https://uki-qualicon-26.github.io/quiz/';
 
   // ---------- tiny content helpers ----------
   const p = (text) => ({ t: 'p', text });
@@ -165,29 +162,41 @@
   ];
 
   // ---------- state ----------
+  // Progress lives on the server (workshop_get / workshop_save), keyed by the registration made on the home page.
   const IDS = new Set(STEPS.map((s) => s.id));
-  let state = load();
+  const api = window.QuizApi;
+  let sess = null;
+  let state = blank();
 
   function blank() { return { path: null, done: {}, view: null, startedAt: null, finishedAt: null }; }
 
-  function load() {
-    try {
-      const raw = JSON.parse(localStorage.getItem(KEY) || 'null');
-      if (!raw || typeof raw !== 'object') return blank();
-      const s = blank();
-      if (raw.path === 'A' || raw.path === 'B') s.path = raw.path;
-      if (raw.done && typeof raw.done === 'object') {
-        Object.keys(raw.done).forEach((k) => { if (IDS.has(k) && raw.done[k] === true) s.done[k] = true; });
-      }
-      if (typeof raw.view === 'string' && IDS.has(raw.view)) s.view = raw.view;
-      if (Number.isFinite(raw.startedAt)) s.startedAt = raw.startedAt;
-      if (Number.isFinite(raw.finishedAt)) s.finishedAt = raw.finishedAt;
-      return s;
-    } catch (e) { return blank(); }
+  function fromServer(s) {
+    const st = blank();
+    if (s.path === 'A' || s.path === 'B') st.path = s.path;
+    (Array.isArray(s.done) ? s.done : []).forEach((k) => { if (IDS.has(k)) st.done[k] = true; });
+    const t0 = Date.parse(s.started_at), t1 = Date.parse(s.finished_at);
+    if (st.path && Number.isFinite(t0)) st.startedAt = t0;
+    if (Number.isFinite(t1)) st.finishedAt = t1;
+    return st;
   }
 
+  // Saves are queued so they reach the server in order. A failure shows a banner but never blocks the guide.
+  let saving = Promise.resolve();
   function save() {
-    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* storage blocked: guide still works */ }
+    if (!sess) return;
+    const path = state.path, done = Object.keys(state.done), finished = !!state.finishedAt;
+    saving = saving.then(() => api.workshopSave(sess.token, path, done, finished))
+      .then(() => showError(''))
+      .catch((e) => {
+        if (e.code === 'invalid_token') { api.session.clear(); renderGate('register'); return; }
+        showError(e.message + ' Your progress on this page is kept, but it may not be saved yet. It will retry on your next click.');
+      });
+  }
+
+  function showError(msg) {
+    const e = $('error');
+    e.textContent = msg || '';
+    e.classList.toggle('hidden', !msg);
   }
 
   const list = () => STEPS.filter((s) => !s.only || s.only === state.path);
@@ -285,7 +294,7 @@
   function view(id) { state.view = id; save(); render(true); }
 
   function restart() {
-    if (!window.confirm('Start over? This clears your progress in this browser.')) return;
+    if (!window.confirm('Start over? This clears your saved workshop progress.')) return;
     state = blank(); save(); render(true);
   }
 
@@ -309,8 +318,37 @@
       callout2('warn', 'Never paste your Jira token into a Bob chat', 'You type it into the settings file yourself.'),
       h('h2', { text: 'Choose your path' }),
       h('div', { class: 'choices' }, a, b),
-      h('p', { class: 'muted small', text: 'You can switch at any time. Your progress is kept if you refresh this page.' }),
-      inline(h('p', { class: 'muted small' }), 'Have you played the quiz yet? [Open the quiz](' + QUIZ_URL + ').')));
+      h('p', { class: 'muted small', text: 'You can switch at any time. Your progress is saved to your registration, so you can carry on from any browser.' })));
+  }
+
+  // Shown instead of the guide when the person is not registered, has not finished the quiz, or the server is unreachable.
+  function renderGate(kind, detail) {
+    $('topbar').classList.add('hidden');
+    const app = $('app');
+    app.replaceChildren();
+    let title, text, link;
+    if (kind === 'register') {
+      title = 'Register first';
+      text = 'Register once on the home page with your name and IBM email. Then take the quiz, and the workshop unlocks when you submit it.';
+      link = h('a', { class: 'btn big', href: '../', text: 'Go to the home page' });
+    } else if (kind === 'quiz') {
+      title = 'Finish the quiz to unlock the workshop';
+      text = detail === 'in_progress'
+        ? 'Your quiz is still in progress. Submit it and this page unlocks.'
+        : 'You have not taken the quiz yet. It takes about three minutes, and this page unlocks when you submit it.';
+      link = h('a', { class: 'btn big', href: '../quiz/', text: detail === 'in_progress' ? 'Resume the quiz' : 'Start the quiz' });
+    } else {
+      title = 'Could not load your progress';
+      text = detail || 'Check your connection and try again.';
+      const retry = h('button', { class: 'btn big', type: 'button', text: 'Try again' });
+      retry.addEventListener('click', boot);
+      link = retry;
+    }
+    app.append(h('section', { class: 'card finish' },
+      h('div', { class: 'big-emoji', text: kind === 'error' ? '⚠️' : '🔒' }),
+      h('h2', { text: title }),
+      h('p', { class: 'muted', text }),
+      h('div', { class: 'row center' }, link)));
   }
 
   function callout2(kind, title, text) { return renderBlock(callout(kind, title, text)); }
@@ -324,7 +362,7 @@
       h('h2', { text: 'Workshop complete' }),
       h('p', { text: 'You used Bob to read requirements, run tests and add a new test.' + (mins ? ' Time on this guide: about ' + mins + ' minute' + (mins === 1 ? '' : 's') + '.' : '') }),
       callout2('tip', 'Before you leave', 'Write down the Bobcoins your session used (Step 14), and do not push the new UKIQC-4 test to the shared repo.'),
-      h('div', { class: 'row center' }, again)));
+      h('div', { class: 'row center' }, again, h('a', { class: 'btn secondary', href: '../', text: 'Back to home' }))));
   }
 
   function renderStep(app, steps, idx, current) {
@@ -417,7 +455,24 @@
     }
   }
 
+  async function boot() {
+    showError('');
+    if (!api || !api.isConfigured()) return renderGate('error', 'This portal is not configured yet.');
+    sess = api.session.get();
+    if (!sess) return renderGate('register');
+    $('app').replaceChildren(h('p', { class: 'muted', text: 'Loading your progress...' }));
+    try {
+      const s = await api.workshopGet(sess.token);
+      if (s.quiz_state !== 'submitted') return renderGate('quiz', s.quiz_state);
+      state = fromServer(s);
+      render(false);
+    } catch (e) {
+      if (e.code === 'invalid_token') { api.session.clear(); return renderGate('register'); }
+      renderGate('error', e.message);
+    }
+  }
+
   $('switch-path').addEventListener('click', () => setPath(state.path === 'A' ? 'B' : 'A'));
   $('restart').addEventListener('click', restart);
-  render(false);
+  boot();
 })();

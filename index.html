@@ -3,22 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://*.supabase.co; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="referrer" content="no-referrer">
   <title>Bob Workshop Guide | Qualicon 2026</title>
-  <link rel="icon" type="image/png" href="assets/favicon.png?v=202611261908">
-  <link rel="stylesheet" href="assets/styles.css?v=202611261908">
-  <link rel="stylesheet" href="assets/guide.css?v=202611261908">
+  <link rel="icon" type="image/png" href="assets/favicon.png?v=202611262013">
+  <link rel="stylesheet" href="assets/styles.css?v=202611262013">
+  <link rel="stylesheet" href="assets/guide.css?v=202611262013">
 </head>
 <body>
 <div class="wrap">
   <div class="brand">
-    <img class="logo-img" src="assets/bob-logo.png?v=202611261908" alt="IBM Bob" width="72" height="72">
+    <img class="logo-img" src="assets/bob-logo.png?v=202611262013" alt="IBM Bob" width="72" height="72">
     <div><h1>Bob Workshop Guide</h1><div class="muted small">One step at a time. The next step unlocks when you finish this one.</div></div>
-    <img class="badge-img" src="assets/qualicon-badge.svg?v=202611261908" alt="Qualicon 2026" width="72" height="72">
+    <img class="badge-img" src="assets/qualicon-badge.svg?v=202611262013" alt="Qualicon 2026" width="72" height="72">
   </div>
 
   <noscript><div class="error">This guide needs JavaScript. Ask the facilitator for the printable runbook.</div></noscript>
+  <div id="error" class="error hidden" role="alert"></div>
 
   <!-- Path bar and progress (hidden on the welcome screen) -->
   <div id="topbar" class="topbar hidden">
@@ -36,8 +37,10 @@
 
   <div id="app" aria-live="polite"></div>
 
-  <footer class="foot">Made with IBM Bob. Your progress is saved only in this browser. Nothing you do here is sent anywhere.</footer>
+  <footer class="foot">Made with IBM Bob. Your progress is saved to your registration. Only your step progress is stored, nothing else.</footer>
 </div>
-<script src="assets/guide.js?v=202611261908"></script>
+<script src="config.js?v=202611262013"></script>
+<script src="assets/api.js?v=202611262013"></script>
+<script src="assets/guide.js?v=202611262013"></script>
 </body>
 </html>
