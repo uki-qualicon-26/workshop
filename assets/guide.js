@@ -158,7 +158,11 @@
       blocks: [
         ol(['**Budget gauge:** hover over the gauge in the top-right corner of the Bob panel to see your remaining Bobcoins.',
             '**This chat:** with the conversation open, look at the top-right of the chat for the tokens and Bobcoins used so far. Note what the whole workshop cost you.',
-            '**Bobalytics:** at bob.ibm.com choose **Admin**, then the **Bobalytics** tab. It is an Enterprise feature for admins, so the presenter demos it unless you are an admin.']),
+            '**Monthly usage:** click the **Settings** icon in the Bob panel and open the **General** tab. Under **Monthly budget** and **Monthly usage** you can see how many Bobcoins you have used this month.',
+            '**Bobalytics:** next to **Monthly usage**, click the **View Bobalytics** link. It opens bob.ibm.com in your browser. Sign in if asked.',
+            '**Metrics:** in the left menu, open **Bobalytics** and click **Metrics**. Set **Scope** to **User** to see only your own numbers. Look at **Activity rate**, **Bob factor** and **Bobcoin spend**, and the **Tasks and turns over time** chart below them.',
+            '**Insights:** click **Insights** in the left menu and have a look at what it shows for your usage.',
+            '**Today and My board:** click **Today**, then **My board**, to see your activity for the day and your own board.']),
         callout('quiz', 'Quiz callback: Bobcoins and Bobalytics', 'Tokens are what the model uses. Bobcoins are the budget Bob converts them into. Bobalytics shows three KPIs: **Adoption rate**, **Bob factor** (the percentage of committed lines of code that Bob created) and **Bobcoin spend**.'),
         p('Write down the Bobcoins used. It is a good number to quote when you tell stakeholders what the workshop cost.'),
       ],
