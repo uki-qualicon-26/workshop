@@ -16,12 +16,13 @@
   const STEPS = [
     {
       id: 's1', num: 1, who: 'you', title: 'Create an empty folder and open it in Bob',
-      confirm: 'Bob is open on my new empty folder.',
+      confirm: 'Bob is open on my new empty folder and I have trusted it.',
       blocks: [
         ol(['Create an empty `workshop` folder in your Documents folder. Run the command below in a terminal, or create it manually.']),
         cmd('mkdir -p ~/Documents/workshop', 'macOS or Linux terminal'),
         cmd('New-Item -ItemType Directory -Force -Path "$HOME\\Documents\\workshop"', 'Windows PowerShell'),
-        ol(['In IBM Bob, choose **File > Open Folder...**, select the new `workshop` folder (`Documents/workshop`), then confirm to open it as your workspace.'], 2),
+        ol(['In IBM Bob, choose **File > Open Folder...**, select the new `workshop` folder (`Documents/workshop`), then confirm to open it as your workspace.',
+            'A new folder opens in **Restricted Mode**, and the Bob chat panel is not shown on the right. Click **Manage** at the end of the Restricted Mode banner at the top, then click **Trust** on the Workspace Trust page. The Bob chat panel then appears on the right-hand side.'], 2),
       ],
     },
     {
