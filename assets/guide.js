@@ -116,9 +116,9 @@
       id: 's10', num: 10, who: 'bob', title: 'Look at the associated test cases',
       confirm: 'Bob showed TC1, TC2 and TC3 next to the acceptance criteria.',
       blocks: [
-        only('A', prompt('Read UKIQC-2, UKIQC-3 and UKIQC-4 with the Jira MCP server. These are test cases for UKIQC-1. Show their steps and expected results side by side with the acceptance criteria and note any gaps.', 'Paste into Bob (Path A, reads from Jira)')),
-        only('B', prompt('Read requirements/UKIQC-2.md, requirements/UKIQC-3.md and requirements/UKIQC-4.md. These are test cases for UKIQC-1 (requirements/UKIQC-1.md). Show their steps and expected results side by side with the acceptance criteria and note any gaps.', 'Paste into Bob (Path B, reads from the repo)')),
-        callout('expect', 'You should see', 'TC1 (cart badge), TC2 (price relationships) and TC3 (blank Postal Code, the mid-sprint change).'),
+        only('A', prompt('Read UKIQC-2, UKIQC-3 and UKIQC-4 with the Jira MCP server. These are test cases for UKIQC-1. Show their steps and expected results side by side with the acceptance criteria. Only list gaps between the acceptance criteria and the test cases.', 'Paste into Bob (Path A, reads from Jira)')),
+        only('B', prompt('Read requirements/UKIQC-2.md, requirements/UKIQC-3.md and requirements/UKIQC-4.md. These are test cases for UKIQC-1 (requirements/UKIQC-1.md). Show their steps and expected results side by side with the acceptance criteria. Only list gaps between the acceptance criteria and the test cases.', 'Paste into Bob (Path B, reads from the repo)')),
+        callout('expect', 'You should see', 'TC1 (cart badge), TC2 (price relationships) and TC3 (blank Postal Code, the mid-sprint change), shown against the acceptance criteria. The gaps should be: AC5d (the tax rule is still open, so no test can check it) and UKIQC-4 (TC3 has no matching acceptance criterion in UKIQC-1).'),
         only('A', callout('tip', 'Name the keys explicitly', 'JQL search does not work with this MCP server, so "find the tests linked to UKIQC-1" will fail.')),
       ],
     },
