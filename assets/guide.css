@@ -1,4 +1,6 @@
 /* Guide-specific styles. The base theme is styles.css (shared with the quiz). */
+/* Wider column than the quiz default (760px) so each step fits with less vertical scrolling. */
+.wrap { max-width: 1280px; }
 .topbar { position: sticky; top: 0; z-index: 5; background: rgba(5, 7, 46, .93); backdrop-filter: blur(4px);
   padding: 10px 12px 12px; margin: 0 -12px 14px; border-bottom: 1px solid var(--border); }
 .mt-s { margin-top: 8px; }
