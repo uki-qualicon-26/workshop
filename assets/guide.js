@@ -360,15 +360,101 @@
 
   function callout2(kind, title, text) { return renderBlock(callout(kind, title, text)); }
 
+  // Canvas fireworks for the certificate. Bursts for a few seconds, then stops. Skipped when the user prefers reduced motion.
+  function launchFireworks(canvas) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => {};
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    const W = window.innerWidth, H = window.innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.scale(dpr, dpr);
+    const colours = ['#3de6ff', '#e040fb', '#ffd24a', '#7cffb2', '#ffffff'];
+    const parts = [];
+    const DURATION = 12000;
+    const t0 = performance.now();
+    let last = 0, raf = 0, stopped = false;
+
+    function burst() {
+      const x = W * (0.15 + Math.random() * 0.7), y = H * (0.12 + Math.random() * 0.4);
+      const colour = colours[Math.floor(Math.random() * colours.length)];
+      for (let i = 0; i < 70; i++) {
+        const a = Math.random() * Math.PI * 2, v = 1.5 + Math.random() * 4.5;
+        parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 1, decay: 0.008 + Math.random() * 0.012, colour });
+      }
+    }
+
+    function frame(now) {
+      if (stopped) return;
+      const spawning = now - t0 < DURATION;
+      if (spawning && now - last > 550) { burst(); last = now; }
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'lighter';
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i];
+        p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.vx *= 0.99; p.life -= p.decay;
+        if (p.life <= 0) { parts.splice(i, 1); continue; }
+        ctx.globalAlpha = Math.max(p.life, 0);
+        ctx.fillStyle = p.colour;
+        ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      if (spawning || parts.length) raf = requestAnimationFrame(frame);
+    }
+    raf = requestAnimationFrame(frame);
+    return () => { stopped = true; cancelAnimationFrame(raf); };
+  }
+
+  function showCertificate() {
+    const name = (sess && sess.name && String(sess.name).trim()) || 'Workshop Participant';
+    const when = new Date(state.finishedAt || Date.now()).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    const opener = document.activeElement;
+    const canvas = h('canvas', { class: 'cert-fireworks', 'aria-hidden': 'true' });
+    const closeBtn = h('button', { class: 'btn big', type: 'button', text: 'Close' });
+    const replayBtn = h('button', { class: 'btn secondary', type: 'button', text: 'Replay fireworks' });
+    const overlay = h('div', { class: 'cert-overlay', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Your completion certificate' },
+      canvas,
+      h('div', { class: 'cert' },
+        h('div', { class: 'cert-cup', 'aria-hidden': 'true', text: '🏆' }),
+        h('div', { class: 'cert-kicker', text: 'Qualicon 2026 · Bob Workshop' }),
+        h('h2', { class: 'cert-title', text: 'Certificate of Completion' }),
+        h('p', { class: 'cert-line', text: 'This certifies that' }),
+        h('div', { class: 'cert-name', text: name }),
+        h('p', { class: 'cert-line', text: 'has completed the Bob Workshop: reading requirements from Jira, running Playwright tests and adding a new test with IBM Bob.' }),
+        h('p', { class: 'cert-date', text: when }),
+        h('div', { class: 'row center' }, replayBtn, closeBtn)));
+
+    let stop = launchFireworks(canvas);
+    function close() {
+      stop();
+      document.removeEventListener('keydown', onKey);
+      overlay.remove();
+      if (opener && opener.focus) opener.focus();
+    }
+    function onKey(e) { if (e.key === 'Escape') close(); }
+    closeBtn.addEventListener('click', close);
+    replayBtn.addEventListener('click', () => {
+      stop();
+      canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+      stop = launchFireworks(canvas);
+    });
+    document.addEventListener('keydown', onKey);
+    document.body.append(overlay);
+    closeBtn.focus();
+  }
+
   function renderFinish(app) {
     const mins = state.startedAt && state.finishedAt ? Math.max(1, Math.round((state.finishedAt - state.startedAt) / 60000)) : null;
+    const cert = h('button', { class: 'btn big', type: 'button', text: '🏆 View your certificate' });
+    cert.addEventListener('click', showCertificate);
     const again = h('button', { class: 'btn secondary', type: 'button', text: 'Review the steps' });
     again.addEventListener('click', () => view(list()[0].id));
     app.append(h('section', { class: 'card finish' },
       h('div', { class: 'big-emoji', text: '🏁' }),
       h('h2', { text: 'Workshop complete' }),
       h('p', { text: 'You used Bob to read requirements, run tests and add a new test.' + (mins ? ' Time on this guide: about ' + mins + ' minute' + (mins === 1 ? '' : 's') + '.' : '') }),
-      callout2('tip', 'Before you leave', 'Write down the Bobcoins your session used (Step 14), and do not push the new UKIQC-4 test to the shared repo.'),
+      h('div', { class: 'row center' }, cert),
       h('div', { class: 'row center' }, again, h('a', { class: 'btn secondary', href: '../', text: 'Back to home' }))));
   }
 
