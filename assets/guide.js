@@ -320,8 +320,7 @@
         inline(h('li'), 'Step numbers match the printable runbook.')),
       callout2('warn', 'Never paste your Jira token into a Bob chat', 'You type it into the settings file yourself.'),
       h('h2', { text: 'Choose your path' }),
-      h('div', { class: 'choices' }, a, b),
-      h('p', { class: 'muted small', text: 'You can switch at any time. Your progress is saved to your registration, so you can carry on from any browser.' })));
+      h('div', { class: 'choices' }, a, b)));
   }
 
   // Shown instead of the guide when the person is not registered, has not finished the quiz, or the server is unreachable.
