@@ -18,8 +18,10 @@
       id: 's1', num: 1, who: 'you', title: 'Create an empty folder and open it in Bob',
       confirm: 'Bob is open on my new empty folder.',
       blocks: [
-        ol(['Create an empty folder on your machine, for example `workshop`.',
-            'In IBM Bob, open that folder as the workspace.']),
+        ol(['Create an empty `workshop` folder in your Documents folder. Run the command below in a terminal, or create it by hand.',
+            'In IBM Bob, open that folder (`Documents/workshop`) as the workspace.']),
+        cmd('mkdir -p ~/Documents/workshop', 'macOS or Linux terminal'),
+        cmd('New-Item -ItemType Directory -Force -Path "$HOME\\Documents\\workshop"', 'Windows PowerShell'),
       ],
     },
     {
