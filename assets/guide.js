@@ -68,10 +68,11 @@
       id: 's6', num: 6, who: 'bob', only: 'A', title: 'Install the Jira MCP package and get the config entry',
       confirm: 'Bob gave me a JSON snippet with the correct path for my machine.',
       blocks: [
-        prompt('Install the mcp-atlassian npm package globally. Then run "which mcp-atlassian" (or "where mcp-atlassian" on Windows) and show me the atlassian-jira entry I need to add to my Bob MCP settings file, with "command" set to that path. Use these environment variable names: ATLASSIAN_BASE_URL set to https://ibm-consulting-sandbox003.atlassian.net, ATLASSIAN_EMAIL set to YOUR_EMAIL_HERE and ATLASSIAN_API_TOKEN set to YOUR_TOKEN_HERE. Do not ask me for the token and do not write anything to any file.'),
+        prompt('Check that uv is installed by running "uv --version", then run "which uvx" (or "where uvx" on Windows). Do not install anything. If uv is missing, tell me how to install it and stop. Otherwise show me the atlassian-jira entry I need to add to my Bob MCP settings file, using the PyPI package mcp-atlassian (the sooperset/mcp-atlassian server) with "command" set to the full path of uvx and "args" set to ["mcp-atlassian"]. Use these environment variable names: JIRA_URL set to https://ibm-consulting-sandbox003.atlassian.net, JIRA_USERNAME set to YOUR_EMAIL_HERE and JIRA_API_TOKEN set to YOUR_TOKEN_HERE. Do not ask me for the token and do not write anything to any file.'),
         callout('warn', 'Leave the placeholders as they are', 'Keep `YOUR_EMAIL_HERE` and `YOUR_TOKEN_HERE` in the prompt. Bob never needs your real values.'),
-        callout('expect', 'You should see', 'A JSON snippet to copy. The bin path differs per machine, so use the path Bob found, not someone else\'s.'),
-        p('The package is community-maintained, so treat it as workshop-only.'),
+        callout('expect', 'You should see', 'A JSON snippet to copy. The `uvx` path differs per machine, so use the path Bob found, not someone else\'s.'),
+        callout('warn', 'If uv is missing', 'Install it yourself from [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/), open a new terminal, then paste the prompt again.'),
+        p('The server downloads automatically the first time Bob starts it, so Step 7 may take a minute on first reload. The package is community-maintained, so treat it as workshop-only.'),
       ],
     },
     {
