@@ -15,6 +15,10 @@ Live at **https://uki-qualicon-26.github.io/workshop/** (people arrive from the 
 - Progress (path and completed step ids) is saved to Supabase through `workshop_get` and `workshop_save`, so people can resume on another device. Nothing else is stored.
 - The workshop is time boxed to 20 minutes. The countdown in the path bar starts when the participant first chooses a path and keeps running through refreshes and Start over (it uses the stored `started_at`). It is a soft limit: at zero it shows "Time is up" and the guide stays open. Change `WORKSHOP_MINUTES` in `assets/guide.js` to adjust it.
 
+## Live progress screen
+
+Project **https://uki-qualicon-26.github.io/workshop/live.html** during the hands-on. It refreshes every 5 seconds and shows how many people finished the quiz, are working, finished the workshop or have made no progress for 5 minutes. It also shows how many people have ticked each step (to spot where the room is stuck), the fastest finishers and who is furthest along. It needs the `workshop_stats()` function from `supabase/schema.sql` in the quiz repo. Host test runs are excluded. No emails or tokens are shown, only names and counts.
+
 ## Files
 
 | File | Purpose |
@@ -23,6 +27,7 @@ Live at **https://uki-qualicon-26.github.io/workshop/** (people arrive from the 
 | `assets/guide.js` | Step content and gating logic (edit `STEPS` to change content) |
 | `assets/api.js`, `config.js` | Same Supabase client and publishable key as the quiz (copy; keep identical) |
 | `assets/guide.css` | Guide-specific styles |
+| `live.html`, `assets/live.js`, `assets/live.css` | Facilitator big screen: live counters, step funnel and top 10 tables (reads `workshop_stats`) |
 | `assets/styles.css` | Qualicon 2026 theme shared with the quiz |
 
 ## Editing the content

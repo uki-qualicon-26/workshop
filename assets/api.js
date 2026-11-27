@@ -80,6 +80,7 @@
     workshopSave: function (token, path, done, finished) {
       return rpc("workshop_save", { p_token: token, p_path: path, p_done: done, p_finished: !!finished });
     },
+    workshopStats: function ()             { return rpc("workshop_stats"); },
     config:      function ()               { return rpc("quiz_config"); },
     register:    function (name, email, hostCode) {
       var args = { p_name: name, p_email: email };

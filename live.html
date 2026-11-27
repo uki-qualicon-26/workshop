@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://*.supabase.co; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex">
+  <title>Bob Workshop - Live Progress</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png?v=202611270930">
+  <link rel="stylesheet" href="assets/styles.css?v=202611270930">
+  <link rel="stylesheet" href="assets/live.css?v=202611270930">
+</head>
+<body>
+<div class="wrap wide stage">
+  <h1 class="stage-title"><img class="logo-img" src="assets/bob-logo.png?v=202611270930" alt="IBM Bob" width="96" height="96"> <span>Bob Workshop - Live</span> <img class="badge-img" src="assets/qualicon-badge.svg?v=202611270930" alt="Qualicon 2026" width="96" height="96"></h1>
+
+  <div class="counters four" aria-live="polite">
+    <div class="counter"><b id="c-quiz">0</b><span class="muted">finished the quiz</span></div>
+    <div class="counter"><b id="c-work">0</b><span class="muted">working now</span></div>
+    <div class="counter"><b id="c-done">0</b><span class="muted">finished the workshop</span></div>
+    <div class="counter"><b id="c-stall">0</b><span class="muted">no progress for 5 min</span></div>
+  </div>
+  <p id="paths" class="muted"></p>
+  <p id="err" class="error hidden" role="alert"></p>
+
+  <div class="card left">
+    <h2>Where is everyone?</h2>
+    <p class="muted small">People who have chosen a path, by steps ticked. Path B skips Steps 5 to 8, so those bars only count Path A.</p>
+    <div id="funnel" class="funnel"></div>
+  </div>
+
+  <div class="two">
+    <div class="card left">
+      <h2>Fastest finishers</h2>
+      <div id="lb-fast"></div>
+    </div>
+    <div class="card left">
+      <h2>Furthest along</h2>
+      <div id="lb-active"></div>
+    </div>
+  </div>
+  <p class="muted small" id="updated"></p>
+</div>
+<script src="config.js?v=202611270930"></script>
+<script src="assets/api.js?v=202611270930"></script>
+<script src="assets/live.js?v=202611270930"></script>
+</body>
+</html>

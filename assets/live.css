@@ -1,0 +1,17 @@
+/* Workshop big screen (live.html): live counters, step funnel and two top-10 tables. */
+.stage .counters.four { grid-template-columns: repeat(4, 1fr); max-width: 980px; }
+@media (max-width: 700px) { .stage .counters.four { grid-template-columns: repeat(2, 1fr); } }
+
+.funnel { display: grid; gap: 8px; }
+.frow { display: grid; grid-template-columns: 2.2rem minmax(0, 18rem) 1fr 3rem; gap: 12px; align-items: center; }
+.frow .fnum { font-weight: 800; color: var(--neon-cyan); text-align: right; }
+.frow .ftitle { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.frow .ftrack { height: 18px; border-radius: 9px; background: rgba(255, 255, 255, .1); overflow: hidden; }
+.frow .ffill { height: 100%; border-radius: 9px; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink)); transition: width .6s ease; }
+.frow .fcount { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
+.frow.pathA .fnum::after { content: " A"; font-size: .7rem; color: var(--muted); }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 860px) { .two { grid-template-columns: 1fr; } }
+.pathtag { display: inline-block; min-width: 1.6rem; text-align: center; border: 1px solid var(--neon-cyan); border-radius: 99px;
+  font-size: .75rem; font-weight: 800; padding: 0 6px; }
