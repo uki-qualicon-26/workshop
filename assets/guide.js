@@ -330,7 +330,7 @@
     ];
     app.append(h('section', { class: 'card welcome' },
       h('h2', { text: 'Welcome to the hands-on' }),
-      inline(h('p', { class: 'lead' }), 'Quiz done. Now put Bob to work on a real testing job: take a Jira story from **requirement to a working, passing test** in about **' + WORKSHOP_MINUTES + ' minutes**.'),
+      inline(h('p', { class: 'lead' }), 'Quiz done. Now the fun part: with Bob doing the heavy lifting, you will go from a **Jira story** to a **brand new Playwright test** in about **' + WORKSHOP_MINUTES + ' minutes**.'),
       h('ol', { class: 'journey', 'aria-label': 'What you will do' }, journey.map((j, i) =>
         h('li', null, h('span', { class: 'jnum', text: String(i + 1) }), h('b', { text: j[0] }), inline(h('span', { class: 'jtext' }), j[1])))),
       inline(h('p', { class: 'muted small' }), 'No MCP, or it is giving you trouble? **Path B** skips the connection and has Bob read the same tickets from the repo. You still run, create and measure.'),
