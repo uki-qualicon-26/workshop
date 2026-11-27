@@ -178,12 +178,16 @@
 
   function blank() { return { path: null, done: {}, view: null, startedAt: null, finishedAt: null }; }
 
+  // The workshop is time boxed. The clock runs from the first time the person chose a path
+  // (the server's started_at), so refreshing or pressing Start over never gives a fresh 20 minutes.
+  const WORKSHOP_MINUTES = 20;
+
   function fromServer(s) {
     const st = blank();
     if (s.path === 'A' || s.path === 'B') st.path = s.path;
     (Array.isArray(s.done) ? s.done : []).forEach((k) => { if (IDS.has(k)) st.done[k] = true; });
     const t0 = Date.parse(s.started_at), t1 = Date.parse(s.finished_at);
-    if (st.path && Number.isFinite(t0)) st.startedAt = t0;
+    if (Number.isFinite(t0)) st.startedAt = t0;
     if (Number.isFinite(t1)) st.finishedAt = t1;
     return st;
   }
@@ -302,8 +306,9 @@
   function view(id) { state.view = id; save(); render(true); }
 
   function restart() {
-    if (!window.confirm('Start over? This clears your saved workshop progress.')) return;
-    state = blank(); save(); render(true);
+    if (!window.confirm('Start over? This clears your saved workshop progress. The countdown keeps running.')) return;
+    const t0 = state.startedAt;
+    state = blank(); state.startedAt = t0; save(); render(true);
   }
 
   // ---------- views ----------
@@ -318,11 +323,11 @@
     b.addEventListener('click', () => setPath('B'));
     app.append(h('section', { class: 'card welcome' },
       h('h2', { text: 'Welcome to the hands-on' }),
-      inline(h('p'), 'You will use IBM Bob to read a Jira story, run Playwright tests on SauceDemo and add a new negative test. It takes about 15 minutes after the quiz.'),
+      inline(h('p'), 'You will use IBM Bob to read a Jira story, run Playwright tests on SauceDemo and add a new negative test. It takes about ' + WORKSHOP_MINUTES + ' minutes after the quiz.'),
       h('ul', { class: 'rules' },
         h('li', { text: 'One step is shown at a time. The next step unlocks when you tick the box and continue.' }),
         h('li', { text: 'Steps 1 to 4 are the same on both paths. Path B skips Steps 5 to 8. From Step 9 the journeys rejoin.' }),
-        inline(h('li'), 'Step numbers match the printable runbook.')),
+        h('li', { text: 'The ' + WORKSHOP_MINUTES + ' minute countdown starts when you choose a path.' })),
       callout2('warn', 'Never paste your Jira token into a Bob chat', 'You type it into the settings file yourself.'),
       h('h2', { text: 'Choose your path' }),
       h('div', { class: 'choices' }, a, b)));
@@ -524,6 +529,7 @@
     pl.className = 'pathpill' + (state.path === 'B' ? ' b' : '');
     const sw = $('switch-path');
     sw.textContent = state.path === 'A' ? 'MCP not working? Switch to Path B' : 'Switch to Path A (Jira MCP)';
+    tickClock();
     const doneCount = steps.filter((s) => state.done[s.id]).length;
     $('progress-text').textContent = doneCount + ' of ' + steps.length + ' steps done';
     $('progress-fill').style.width = Math.round((doneCount / steps.length) * 100) + '%';
@@ -540,6 +546,18 @@
       nav.append(b);
     });
   }
+
+  // Countdown in the path bar. Soft time box: at zero it says so, but the guide stays open.
+  function tickClock() {
+    const el = $('ws-clock');
+    if (!el) return;
+    if (!state.path || !state.startedAt || state.finishedAt) { el.textContent = ''; el.classList.remove('low'); return; }
+    const left = Math.round((state.startedAt + WORKSHOP_MINUTES * 60000 - Date.now()) / 1000);
+    if (left <= 0) { el.textContent = 'Time is up'; el.classList.add('low'); return; }
+    el.textContent = Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0') + ' left';
+    el.classList.toggle('low', left <= 120);
+  }
+  setInterval(tickClock, 1000);
 
   function render(focus) {
     const app = $('app');

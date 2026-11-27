@@ -13,7 +13,7 @@ Live at **https://uki-qualicon-26.github.io/workshop/** (people arrive from the 
 - Every Bob prompt has a Copy button.
 - The guide needs the one registration made on the home page, and it opens only after the quiz has been submitted. The server checks this too: `workshop_save` rejects anyone who has not submitted the quiz.
 - Progress (path and completed step ids) is saved to Supabase through `workshop_get` and `workshop_save`, so people can resume on another device. Nothing else is stored.
-- Step numbers match the printable runbook.
+- The workshop is time boxed to 20 minutes. The countdown in the path bar starts when the participant first chooses a path and keeps running through refreshes and Start over (it uses the stored `started_at`). It is a soft limit: at zero it shows "Time is up" and the guide stays open. Change `WORKSHOP_MINUTES` in `assets/guide.js` to adjust it.
 
 ## Files
 
