@@ -126,7 +126,7 @@
       id: 's11', num: 11, who: 'bob', title: 'Review and run the existing Playwright tests',
       confirm: 'Both tests passed and I could see the HTML report.',
       blocks: [
-        prompt('Open tests/checkout-calculation.spec.js and briefly explain what the two tests check and why they do not assert fixed price or tax values. Then run the file in headed Chromium and open the HTML report. Summarise the results from the actual output, including any failures and likely causes. Do not claim a test passed unless the run confirms it.'),
+        prompt('Open tests/checkout-calculation.spec.js and briefly explain what the two tests check and why they do not assert fixed price or tax values. First stop any Playwright HTML report server still running from an earlier run (for example one started by npx playwright show-report) and tell me what you stopped. Then run the file in headed Chromium and open the HTML report. Summarise the results from the actual output, including any failures and likely causes. Do not claim a test passed unless the run confirms it.'),
         callout('expect', 'You should see', '2 passed, a headed browser slowed by `slowMo`, and an HTML report with a video under each test\'s Attachments.'),
         cmd('npx playwright test tests/checkout-calculation.spec.js --headed\nnpx playwright show-report'),
         p('If the report page will not load, run `npx playwright show-report` in a terminal in the project folder. It must stay running in the foreground.'),
@@ -147,7 +147,7 @@
       id: 's13', num: 13, who: 'bob', title: 'Run only the new test',
       confirm: 'The UKIQC-4 test ran on its own and passed.',
       blocks: [
-        prompt('Run only the UKIQC-4 test in headed Chromium using the -g flag, then summarise the result from the actual output. Do not claim it passed unless the run confirms it.'),
+        prompt('First stop any Playwright HTML report server still running from an earlier run and tell me what you stopped. Then run only the UKIQC-4 test in headed Chromium using the -g flag, then summarise the result from the actual output. Do not claim it passed unless the run confirms it.'),
         cmd('npx playwright test tests/checkout-calculation.spec.js --headed -g "UKIQC-4"', 'Equivalent command'),
         callout('expect', 'You should see', '1 passed. SauceDemo shows `Error: Postal Code is required` for a blank postal code.'),
       ],
