@@ -56,6 +56,18 @@ a { color: var(--neon-cyan); }
 .gate .row { gap: 10px; }
 .lockedmsg { color: var(--muted); font-size: .9rem; }
 
+.welcome .lead { font-size: 1.1rem; line-height: 1.55; margin: 4px 0 16px; }
+.journey { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(5, 1fr); }
+.journey li { display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 12px; border: 1px solid var(--border);
+  background: rgba(14, 14, 66, .85); }
+.journey li:nth-child(odd) { border-color: rgba(61, 230, 255, .55); }
+.journey li:nth-child(even) { border-color: rgba(224, 64, 251, .55); }
+.journey .jnum { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: .9rem; color: #fff; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink)); }
+.journey b { font-size: 1.02rem; }
+.journey .jtext { font-size: .88rem; color: var(--muted); line-height: 1.45; }
+@media (max-width: 900px) { .journey { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 460px) { .journey { grid-template-columns: 1fr; } }
 .welcome .choices { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; margin: 16px 0; }
 @media (max-width: 640px) { .welcome .choices { grid-template-columns: 1fr; } }
 .choice { text-align: left; padding: 16px; border-radius: 14px; border: 1.5px solid var(--neon-cyan); cursor: pointer;

@@ -321,9 +321,19 @@
       h('span', { class: 'muted', text: 'Bob reads the same tickets from the repo\'s requirements folder. Choose this if MCP is not set up or is giving you trouble.' }));
     a.addEventListener('click', () => setPath('A'));
     b.addEventListener('click', () => setPath('B'));
+    const journey = [
+      ['Connect', 'Plug Bob into IBM Jira through an **MCP server**.'],
+      ['Ask Jira', 'Have Bob **query Jira** and read the story and its test cases.'],
+      ['Run', 'Run the **Playwright** tests on SauceDemo and watch the report.'],
+      ['Create', 'Let Bob **write a brand new negative test** for a late requirement.'],
+      ['Wrap up', 'Check your Bobcoins and **Bobalytics** to see what it all cost.'],
+    ];
     app.append(h('section', { class: 'card welcome' },
       h('h2', { text: 'Welcome to the hands-on' }),
-      inline(h('p'), 'You will use IBM Bob to read a Jira story, run Playwright tests on SauceDemo and add a new negative test. It takes about ' + WORKSHOP_MINUTES + ' minutes after the quiz.'),
+      inline(h('p', { class: 'lead' }), 'Quiz done. Now put Bob to work on a real testing job: take a Jira story from **requirement to a working, passing test** in about **' + WORKSHOP_MINUTES + ' minutes**.'),
+      h('ol', { class: 'journey', 'aria-label': 'What you will do' }, journey.map((j, i) =>
+        h('li', null, h('span', { class: 'jnum', text: String(i + 1) }), h('b', { text: j[0] }), inline(h('span', { class: 'jtext' }), j[1])))),
+      inline(h('p', { class: 'muted small' }), 'No MCP, or it is giving you trouble? **Path B** skips the connection and has Bob read the same tickets from the repo. You still run, create and measure.'),
       h('ul', { class: 'rules' },
         h('li', { text: 'One step is shown at a time. The next step unlocks when you tick the box and continue.' }),
         h('li', { text: 'Steps 1 to 4 are the same on both paths. Path B skips Steps 5 to 8. From Step 9 the journeys rejoin.' }),
